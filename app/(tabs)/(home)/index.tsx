@@ -12,7 +12,7 @@ export default function HomeScreen() {
     const [repositoriesFiltered, setRepositoriesFiltered] = useState<Repository[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const { currentUser, favoritesRepositories } = useRepositories();
+    const { currentUser, favoritesRepositories, charged } = useRepositories();
 
     const [left] = useState(new Animated.Value(-200));
     const [right] = useState(new Animated.Value(200));
@@ -96,8 +96,9 @@ export default function HomeScreen() {
     }
 
     useEffect(() => {
-        fetchRepositories();
-    }, [currentUser]);
+        if(charged)
+            fetchRepositories();
+    }, [currentUser, charged]);
 
     useEffect(() => {
         const ids = favoritesRepositories.map(rep => rep.id);
@@ -120,6 +121,7 @@ export default function HomeScreen() {
                             }}
                             renderItem={({item, index}) => (
                                 <Animated.View
+                                    key={item.id.toString()}
                                     style={{
                                         opacity,
                                         transform: [

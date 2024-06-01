@@ -37,12 +37,16 @@ export default function DetailsScreen() {
         setFavorited(!favorited);
     }
 
+    function handleGoBack() {
+        router.back();
+    }
+
     return (
         <Container>
             <View>
                 <StatusBar backgroundColor="#000" barStyle="light-content" />
                 <Header>
-                    <ButtonBack onPress={() => router.back()}>
+                    <ButtonBack onPress={handleGoBack}>
                         <Ionicons name="arrow-back" size={24} color="#FFF" />
                     </ButtonBack>
 

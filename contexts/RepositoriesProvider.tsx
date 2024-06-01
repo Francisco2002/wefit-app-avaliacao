@@ -7,6 +7,7 @@ interface RepositoriesContextType {
     setCurrentUser: React.Dispatch<React.SetStateAction<string>>;
     favoritesRepositories: Repository[],
     handleFavoriteRepository: (repository: Repository) => void;
+    charged: boolean;
 }
 
 const RepositoriesContext = createContext<RepositoriesContextType | undefined>(undefined);
@@ -14,31 +15,43 @@ const RepositoriesContext = createContext<RepositoriesContextType | undefined>(u
 export default function FavoritesRepositoriesProvider({ children }: ProviderProps<typeof RepositoriesContext | null>) {
     const [favoritesRepositories, setFavoritesRepositories] = useState<Repository[]>([]);
     const [currentUser, setCurrentUser] = useState("appswefit");
+    const [charged, setCharged] = useState(false);
 
     function handleFavoriteRepository(repository: Repository) {
+        let repositories = [];
+        
         if(favoritesRepositories.some(rep => rep.id == repository.id)) {
-            setFavoritesRepositories(favoritesRepositories.filter(rep => rep.id != repository.id));
+            repositories = favoritesRepositories.filter(rep => rep.id != repository.id);
         } else {
-            setFavoritesRepositories([...favoritesRepositories, repository]);
+            repositories = [...favoritesRepositories, repository];
         }
-    }
 
-    useEffect(() => {
-        persistFavoritesRepositories(favoritesRepositories);
-    }, [favoritesRepositories]);
+        persistFavoritesRepositories(repositories);
+        setFavoritesRepositories(repositories);
+    }
 
     useEffect(() => {
         async function init() {
             const data: Repository[] = await getFavoriteRepositories();
 
             setFavoritesRepositories(data);
+
+            setTimeout(() => setCharged(true), 500);
         }
 
         init();
     }, []);
 
     return (
-        <RepositoriesContext.Provider value={{ currentUser, setCurrentUser, favoritesRepositories, handleFavoriteRepository }}>
+        <RepositoriesContext.Provider
+            value={{
+                currentUser,
+                setCurrentUser,
+                favoritesRepositories,
+                handleFavoriteRepository,
+                charged
+            }}
+        >
             {children}
         </RepositoriesContext.Provider>
     );

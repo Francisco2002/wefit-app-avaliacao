@@ -1,4 +1,3 @@
-import { FavoritedButtonProps } from "@/@types/env";
 import styled from "styled-components/native";
 
 export const Card = styled.TouchableOpacity`
@@ -56,13 +55,11 @@ const DefaultView = styled.View`
     gap: 10px;
 `;
 
-export const ButtonFavorite = styled.TouchableOpacity<FavoritedButtonProps>`
+export const ButtonFavorite = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    background-color: ${props => props.favorited ? "#FFF" : "#FAF3DC"};
-    border: ${props => props.favorited ? 1 : 0}px;
-    border-color: #FFD02C;
+    background-color: #FAF3DC;
     padding: 10px;
     border-radius: 4px;
 `;

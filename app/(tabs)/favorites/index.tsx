@@ -1,7 +1,6 @@
 import CardComponent from "@/components/Card";
 import { FlatList } from "react-native";
 import { EmptyContent, EmptyIcon, EmptyText } from "../styles";
-import { useNavigation } from "expo-router";
 import { useRepositories } from "@/contexts/RepositoriesProvider";
 
 export default function FavoritesScreen() {
